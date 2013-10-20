@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Client Side Hashing</title>
+    <script src="http://polycrypt.net/common/util.js"></script>
+	<script src="http://polycrypt.net/front/polycrypt.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
+	<script src="https://raw.github.com/bitwiseshiftleft/sjcl/master/sjcl.js"></script>
+</head>
+<body>
+<p><a href="index.html">Home</a></p>
+<div class="container">
+    <p>The PolyCrypt SHA-256 hash of the string <b id="polypassword"></b> is: <b id="polyhash">...</b></p>
+    <p>The CryptoJs SHA-256 hash of the string <b id="cryptopassword"></b> is: <b id="cryptohash">...</b></p>
+    <p>The SJCL SHA-256 hash of the string <b id="sjclpassword"></b> is: <b id="sjclhash">...</b></p>
+</div>
+<script>
+var password = 'monkey123';
+
+/* POLYCRYPT HASH */
+function polycryptHash(){
+	document.getElementById("polypassword").innerHTML=password;
+	var polystring=util.str2abv(password);
+	var op=window.polycrypt.digest("SHA-256",polystring);
+	op.oncomplete=function(e){
+		var hex=util.abv2hex(e.target.result);
+		document.getElementById("polyhash").innerHTML=hex;
+	}
+	op.onerror=function(e){
+		console.log("error");
+	}
+}
+window.polycrypt.onalive=polycryptHash;
+
+/* CRYPTOJS HASH */
+var cryptohash = CryptoJS.SHA256(password);
+document.getElementById("cryptopassword").innerHTML=password;
+document.getElementById("cryptohash").innerHTML=cryptohash;
+
+/* SJCL HASH */
+var bitArray = sjcl.hash.sha256.hash(password);
+var digest_sha256 = sjcl.codec.hex.fromBits(bitArray); 
+document.getElementById("sjclpassword").innerHTML=password;
+document.getElementById("sjclhash").innerHTML=digest_sha256;
+</script>
+</body>
+</html>

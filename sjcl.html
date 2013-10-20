@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SJCL Client Side Encryption</title>
+	<script src="https://raw.github.com/bitwiseshiftleft/sjcl/master/sjcl.js"></script>
+</head>
+<body>
+<p><a href="index.html">Home</a></p>
+<h2>SJCL Client Side Encryption</h2>
+<div class="container">
+    <p>Secret String is: <b id="secretstring">...</b></p>
+    <p>Password is: <b id="passwordstring">...</b></p>
+    <p>Encrypted String is: <b id="encryptedstring">...</b></p>
+    <p>Decrypted String is: <b id="decryptedstring">...</b></p>
+</div>
+<script>
+var secretString = "This is the secret string";
+var password = "monkey123";
+
+document.getElementById("secretstring").innerHTML=secretString;
+document.getElementById("passwordstring").innerHTML=password;
+
+var encrypted = sjcl.encrypt(password, secretString);
+document.getElementById("encryptedstring").innerHTML=encrypted;
+
+var decrypted = sjcl.decrypt(password, encrypted);
+document.getElementById("decryptedstring").innerHTML=decrypted;
+
+</script>
+</body>
+</html>
